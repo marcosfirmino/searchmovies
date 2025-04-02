@@ -27,6 +27,7 @@ export default function Search() {
       setError("Erro ao buscar filmes. Tente novamente.");
       console.error(err);
     } finally {
+      console.log("API Key na Vercel:", process.env.NEXT_PUBLIC_TMDB_API_KEY);
       setLoading(false);
     }
   };
