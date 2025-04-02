@@ -9,6 +9,7 @@ export default function Search() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   const searchMovies = async (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ export default function Search() {
 
     try {
       const response = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=db7c529102dd5bbe0c3f5d7c307af628&language=pt-BR&query=${query}`
+        `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${query}`
       );
       setMovies(response.data.results);
     } catch (err) {

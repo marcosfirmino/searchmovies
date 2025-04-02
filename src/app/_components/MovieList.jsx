@@ -6,12 +6,13 @@ import MovieCarousel from "./MovieCarousel";
 
 export default function MovieList({ title, endpoint }) {
   const [movies, setMovies] = useState([]);
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   useEffect(() => {
     async function fetchMovies() {
       try {
         const response = await axios.get(
-          `https://api.themoviedb.org/3/${endpoint}?api_key=db7c529102dd5bbe0c3f5d7c307af628&language=pt-BR`
+          `https://api.themoviedb.org/3/${endpoint}?api_key=${apiKey}&language=pt-BR`
         );
         setMovies(response.data.results);
       } catch (error) {
