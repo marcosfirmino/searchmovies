@@ -7,11 +7,12 @@ import axios from "axios";
 export default function MovieDetail() {
   const { id } = useParams(); // Usando o hook correto do App Router
   const [movie, setMovie] = useState(null);
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   useEffect(() => {
     if (id) {
       axios
-        .get(`https://api.themoviedb.org/3/movie/${id}?api_key=db7c529102dd5bbe0c3f5d7c307af628&language=pt-BR`)
+        .get(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`)
         .then((response) => setMovie(response.data))
         .catch((error) => console.error("Erro ao buscar os dados do filme:", error));
     }

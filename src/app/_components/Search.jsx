@@ -10,7 +10,6 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
-  console.log("API Key na Vercel:", process.env.NEXT_PUBLIC_TMDB_API_KEY);
 
   const searchMovies = async (e) => {
     e.preventDefault();

@@ -6,10 +6,11 @@ export default function WatchMovie() {
   const { id } = useParams(); // Pega o ID dinamicamente
   const [movie, setMovie] = useState(null);
   const embedUrl = `https://vidsrc.to/embed/movie/${id}`;
+  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   useEffect(() => {
     if (id) {
-      fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=db7c529102dd5bbe0c3f5d7c307af628&language=pt-BR`)
+      fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`)
         .then((res) => res.json())
         .then((data) => setMovie(data))
         .catch((err) => console.error("Erro ao buscar os dados do filme:", err));
