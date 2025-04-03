@@ -1,5 +1,6 @@
 import MovieList from "./_components/MovieList";
 import Search from "./_components/Search";
+import Footer from "./_components/Footer"
 
  export default function Home() {
   return (
@@ -9,6 +10,7 @@ import Search from "./_components/Search";
       <MovieList title="Bem Avaliados 🧐" endpoint="movie/top_rated"/>
       <MovieList title="Nos Cinemas 🍿" endpoint="movie/now_playing" />
       <MovieList title="Em Breve 🚀" endpoint="movie/upcoming"/>
+      <Footer/>
     </div>
   )
  }
