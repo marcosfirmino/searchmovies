@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MovieCarousel from "./MovieCarousel";
+import LoadingSpinner from "./LoadingSpinner";
 
 export default function MovieList({ title, endpoint }) {
   const [movies, setMovies] = useState([]);
@@ -33,8 +34,12 @@ export default function MovieList({ title, endpoint }) {
     fetchMovies();
   }, [endpoint, apiKey]);
 
-  if (loading) return <p>Carregando os melhores filmes...</p>;
-
+  if (loading) {
+    return (
+      <LoadingSpinner/>
+);
+  }
+  
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   if (movies.length === 0) return <p>Nenhum filme encontrado.</p>;

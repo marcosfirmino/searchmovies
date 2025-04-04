@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation"; // Novo import
 import { useEffect, useState } from "react";
 import axios from "axios";
+import LoadingSpinner from "@/app/_components/LoadingSpinner";
 
 export default function MovieDetail() {
   const { id } = useParams(); // Usando o hook correto do App Router
@@ -18,13 +19,17 @@ export default function MovieDetail() {
     }
   }, [id]);
 
-  if (!movie) return <p className="flex items-center justify-center h-screen text-3xl font-bold">Carregando...</p>;
+  if (!movie) return <div className="flex items-center justify-center min-h-screen"><LoadingSpinner/></div>
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-center"><span className="text-3xl font-bold">{movie.title}</span> ({movie.release_date.split("-")[0]}) ⭐{movie.vote_average.toFixed(1)}</h1>
+      <h1 className="text-center"><span className="text-3xl font-bold">{movie.title}</span> ({movie.release_date ? movie.release_date.split("-")[0] : "?"}) ⭐{movie.vote_average ? movie.vote_average.toFixed(1) : "?"}</h1>
       <img
-        src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+        src={
+          movie.poster_path
+            ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+            : "/placeholder.png"
+        }
         className="w-80 h-auto rounded-lg mt-4 block mx-auto "
         alt={movie.title}
       />

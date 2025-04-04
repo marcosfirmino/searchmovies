@@ -1,6 +1,8 @@
-"use client"; // Define que o componente será cliente
+"use client"; 
+
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import LoadingSpinner from "@/app/_components/LoadingSpinner";
 
 export default function WatchMovie() {
   const { id } = useParams(); // Pega o ID dinamicamente
@@ -17,7 +19,7 @@ export default function WatchMovie() {
     }
   }, [id]);
 
-  if (!movie) return <p>Carregando...</p>;
+  if (!movie) return <div className="flex items-center justify-center min-h-screen"><LoadingSpinner/></div>
 
   return (
     <div className="flex flex-col items-center p-4">
