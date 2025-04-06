@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import LoadingSpinner from "@/app/_components/LoadingSpinner"
 import Footer from "@/app/_components/Footer"
+import BackButton from "@/app/_components/BackButton";
 
 export default function MovieDetail() {
   const { id } = useParams();
@@ -53,13 +54,7 @@ export default function MovieDetail() {
 
   return (
     <div className="p-2 max-w-5xl mx-auto">
-      <button
-        onClick={() => router.back()}
-        className="text-sm text-blue-400 hover:underline"
-      >
-        ​↩️​ Voltar
-      </button>
-
+      <BackButton/>
       <div className="text-center">
         <h1 className="text-3xl font-bold">{movie.title}</h1>
         <p className="text-gray-400">
@@ -83,11 +78,9 @@ export default function MovieDetail() {
           <p><strong>Título original:</strong> {movie.original_title}</p>
           <p><strong>Duração:</strong> {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}min</p>
           <p><strong>Gêneros:</strong> {movie.genres.map(g => g.name).join(", ")}.</p>
-        
           <Link href={`/watch/${id}`}>
-            <button className="bg-red-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-              Assistir
-            </button>
+          <button className="mt-4 bg-red-600 font-bold inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-md text-white hover:bg-white/10 transition duration-200 text-sm md:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/30">
+            <span className="text-base leading-none translate-y-[1px]">🎞️</span>Assistir</button>
           </Link>
         </div>
       </div>

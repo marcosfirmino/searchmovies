@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/app/_components/LoadingSpinner";
 import Footer from "@/app/_components/Footer";
+import BackButton from "@/app/_components/BackButton";
 
 export default function WatchMovie() {
   const { id } = useParams();
@@ -32,6 +33,7 @@ export default function WatchMovie() {
     <div className="flex flex-col min-h-screen px-4 p-2">
       <div className="flex-grow flex items-center justify-center">
         <div className="w-full max-w-4xl mx-auto">
+        <BackButton/>
           <div className="text-center pb-4">
             <h1 className="text-3xl font-bold">{movie.title}</h1>
             <p className="text-gray-400">({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average.toFixed(1)}</p>
