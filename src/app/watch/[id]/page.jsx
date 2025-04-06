@@ -1,11 +1,12 @@
-"use client"; 
+"use client";
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/app/_components/LoadingSpinner";
+import Footer from "@/app/_components/Footer";
 
 export default function WatchMovie() {
-  const { id } = useParams(); // Pega o ID dinamicamente
+  const { id } = useParams();
   const [movie, setMovie] = useState(null);
   const embedUrl = `https://vidsrc.to/embed/movie/${id}`;
   const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -19,18 +20,26 @@ export default function WatchMovie() {
     }
   }, [id]);
 
-  if (!movie) return <div className="flex items-center justify-center min-h-screen"><LoadingSpinner/></div>
+  if (!movie) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col items-center p-4">
-      <h1 className="text-2xl font-bold mb-4">{movie.title}</h1>
-      <div className="w-full max-w-4xl">
-        <iframe
-          src={embedUrl}
-          className="w-full h-[500px] border-none rounded-lg"
-          allowFullScreen
-        ></iframe>
+    <div className="flex flex-col min-h-screen px-4 p-2">
+      <div className="flex-grow flex items-center justify-center">
+        <div className="w-full max-w-4xl mx-auto">
+          <div className="text-center pb-4">
+            <h1 className="text-3xl font-bold">{movie.title}</h1>
+            <p className="text-gray-400">({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average.toFixed(1)}</p>
+          </div>
+          <div className="aspect-video rounded-lg overflow-hidden shadow-lg"><iframe src={embedUrl} className="w-full h-full" allowFullScreen></iframe></div>
+        </div>
       </div>
+      <Footer/>
     </div>
   );
 }

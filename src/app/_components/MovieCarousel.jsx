@@ -34,7 +34,7 @@ export default function MovieCarousel({ title, movies }) {
                   className="w-full aspect-[2/3] object-cover rounded-md"
                 />
                 <p className="p-2 text-center text-sm">
-                  <span className="font-semibold">{movie.title}</span> <span className="text-gray-400">({movie.release_date?.split("-")[0]}) ⭐{movie.vote_average?.toFixed(1)}
+                  <span className="font-semibold">{movie.title}</span> <span className="text-gray-400">({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average?.toFixed(1)}
                   </span>
                 </p>
               </div>
