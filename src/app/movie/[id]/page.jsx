@@ -14,6 +14,7 @@ export default function MovieDetail() {
   const [movie, setMovie] = useState(null);
   const [videoKey, setVideoKey] = useState(null);
   const [cast, setCast] = useState([]);
+  const [certification, setCertification] = useState(null);
   const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   useEffect(() => {
@@ -35,10 +36,21 @@ export default function MovieDetail() {
         const creditsRes = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}&language=pt-BR`
         );
-        setCast(creditsRes.data.cast.slice(0, 6)); // Pega os 6 primeiros
+        setCast(creditsRes.data.cast.slice(0, 12)); // Pega os 6 primeiros
       } catch (error) {
         console.error("Erro ao buscar os dados:", error);
       }
+
+      const releaseDatesRes = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKey}`
+      );
+      
+      const brData = releaseDatesRes.data.results.find(
+        (item) => item.iso_3166_1 === "BR"
+      );
+      
+      const cert = brData?.release_dates[0]?.certification;
+      setCertification(cert || "N/A");
     };
 
     fetchData();
@@ -55,7 +67,7 @@ export default function MovieDetail() {
   return (
     <div className="p-2 max-w-5xl mx-auto">
       <BackButton/>
-      <div className="text-center">
+      <div className="text-center mb-2">
         <h1 className="text-3xl font-bold">{movie.title}</h1>
         <p className="text-gray-400">
         ({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average.toFixed(1)}
@@ -73,13 +85,16 @@ export default function MovieDetail() {
           alt={movie.title}
         />
         <div className="space-y-3">
-          <p><strong>Sinopse:</strong> {movie.overview}</p>
-          <p><strong>Data de lançamento:</strong> {new Date(movie.release_date).toLocaleDateString("pt-BR")}</p>
-          <p><strong>Título original:</strong> {movie.original_title}</p>
-          <p><strong>Duração:</strong> {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}min</p>
-          <p><strong>Gêneros:</strong> {movie.genres.map(g => g.name).join(", ")}.</p>
+          <p><strong>​📖​ Sinopse:</strong> {movie.overview}</p>
+          <p><strong>🔞​ Classificação:</strong> {certification && certification !== "N/A" ? certification === "L" ? "Livre" : `${certification}+` : "Não informada"}</p>
+          <p><strong>🗓️​ Data de lançamento:</strong> {new Date(movie.release_date).toLocaleDateString("pt-BR")}</p>
+          <p><strong>💸​ Orçamento:</strong> {movie.budget > 0? movie.budget.toLocaleString("pt-BR", {style: "currency",currency: "USD"}): "Não informado"}</p>
+          <p><strong>💰​ Receita:</strong> {movie.revenue > 0? movie.revenue.toLocaleString("pt-BR", {style: "currency",currency: "USD"}): "Não informada"}</p>
+          {/* <p><strong>Título original:</strong> {movie.original_title}</p> */}
+          <p><strong>​​⌛​ Duração:</strong> {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}min</p>
+          <p><strong>​​​🧬​ Gêneros:</strong> {movie.genres.map(g => g.name).join(", ")}.</p>
           <Link href={`/watch/${id}`}>
-          <button className="mt-4 bg-red-600 font-bold inline-flex items-center gap-2 px-4 py-2 border border-white/20 rounded-md text-white hover:bg-white/10 transition duration-200 text-sm md:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/30">
+          <button className="mt-4 bg-red-600 font-bold inline-flex items-center gap-2 px-4 py-3 border border-white/20 rounded-md text-white hover:bg-white/10 transition duration-200 text-sm md:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/30">
             <span className="text-base leading-none translate-y-[1px]">🎞️</span>Assistir</button>
           </Link>
         </div>
@@ -87,7 +102,7 @@ export default function MovieDetail() {
 
       {videoKey && (
         <div>
-          <h2 className="text-xl font-semibold mb-2 pt-10">Trailer Oficial</h2>
+          <h2 className="text-xl font-semibold mb-2 pt-10">🎬​ Trailer Oficial</h2>
           <div className="aspect-video">
             <iframe
               className="w-full h-full rounded-md"
@@ -101,7 +116,7 @@ export default function MovieDetail() {
 
       {cast.length > 0 && (
         <div>
-          <h2 className="text-xl font-semibold mb-2 pt-10">Elenco Principal</h2>
+          <h2 className="text-xl font-semibold mb-2 pt-10">🫂​ Elenco Principal</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 pb-5">
             {cast.map((actor) => (
               <div key={actor.id} className="text-center text-sm">
@@ -114,7 +129,7 @@ export default function MovieDetail() {
                   alt={actor.name}
                   className="w-full aspect-[2/3] object-cover rounded-md transition-transform hover:scale-105"
                 />
-                <p className="font-medium">{actor.name}</p>
+                <p className="font-medium pt-2">{actor.name}</p>
                 <p className="text-gray-400">({actor.character})</p>
               </div>
             ))}

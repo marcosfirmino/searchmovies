@@ -32,7 +32,7 @@ export default function WatchMovie() {
   return (
     <div className="flex flex-col min-h-screen px-4 p-2">
       <div className="flex-grow flex items-center justify-center">
-        <div className="w-full max-w-4xl mx-auto">
+        <div  className="w-full max-w-3xl md:max-w-3xl lg:max-w-3xl xl:max-w-3xl 2xl:max-w-7xl mx-auto">
         <BackButton/>
           <div className="text-center pb-4">
             <h1 className="text-3xl font-bold">{movie.title}</h1>
