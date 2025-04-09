@@ -7,14 +7,17 @@ import axios from "axios";
 import LoadingSpinner from "@/app/_components/LoadingSpinner"
 import Footer from "@/app/_components/Footer"
 import BackButton from "@/app/_components/BackButton";
+import ActorCarousel from "@/app/_components/ActorCarousel";
+import RecommendedMovieCarousel from "@/app/_components/RecommendedMovieCarousel";
 
 export default function MovieDetail() {
   const { id } = useParams();
-  const router = useRouter();
   const [movie, setMovie] = useState(null);
   const [videoKey, setVideoKey] = useState(null);
   const [cast, setCast] = useState([]);
   const [certification, setCertification] = useState(null);
+  const [recommendedMovies, setRecommendedMovies] = useState([]);
+
   const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   useEffect(() => {
@@ -51,6 +54,14 @@ export default function MovieDetail() {
       
       const cert = brData?.release_dates[0]?.certification;
       setCertification(cert || "N/A");
+
+      const recommendedRes = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}&language=pt-BR`
+      );
+      setRecommendedMovies(
+        recommendedRes.data.results.filter((movie) => movie.poster_path)
+      );
+
     };
 
     fetchData();
@@ -69,11 +80,8 @@ export default function MovieDetail() {
       <BackButton/>
       <div className="text-center mb-2">
         <h1 className="text-3xl font-bold">{movie.title}</h1>
-        <p className="text-gray-400">
-        ({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average.toFixed(1)}
-        </p>
+        <p className="text-gray-400">({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average.toFixed(1)}</p>
       </div>
-
       <div className="flex flex-col md:flex-row gap-6 items-center">
         <img
           src={
@@ -81,7 +89,7 @@ export default function MovieDetail() {
               ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
               : "/placeholder.png"
           }
-          className="w-74 rounded-md shadow-md"
+          className="max-w-xs rounded-md shadow-md"
           alt={movie.title}
         />
         <div className="space-y-3">
@@ -102,7 +110,7 @@ export default function MovieDetail() {
 
       {videoKey && (
         <div>
-          <h2 className="text-xl font-semibold mb-2 pt-10">🎬​ Trailer Oficial</h2>
+          <h2 className="text-xl font-semibold mb-2 mt-10">🎬​ Trailer Oficial</h2>
           <div className="aspect-video">
             <iframe
               className="w-full h-full rounded-md"
@@ -115,27 +123,11 @@ export default function MovieDetail() {
       )}
 
       {cast.length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold mb-2 pt-10">🫂​ Elenco Principal</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 pb-5">
-            {cast.map((actor) => (
-              <div key={actor.id} className="text-center text-sm">
-                <img
-                  src={
-                    actor.profile_path
-                      ? `https://image.tmdb.org/t/p/w185${actor.profile_path}`
-                      : "/placeholder.png"
-                  }
-                  alt={actor.name}
-                  className="w-full aspect-[2/3] object-cover rounded-md transition-transform hover:scale-105"
-                />
-                <p className="font-medium pt-2">{actor.name}</p>
-                <p className="text-gray-400">({actor.character})</p>
-              </div>
-            ))}
-          </div>
-        </div>
+          <ActorCarousel title="🫂 Elenco Principal" cast={cast}/>
       )}
+
+      {recommendedMovies.length > 0 && (
+        <RecommendedMovieCarousel title="🎯 Recomendados para você" movies={recommendedMovies}/>)}
       <Footer/>
     </div>
   );
