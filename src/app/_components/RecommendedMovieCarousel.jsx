@@ -16,7 +16,7 @@ export default function RecommendedCarousel({ title, movies }) {
         spaceBetween={10}
         navigation
         breakpoints={{
-            320: { slidesPerView: 2 },   // muito pequeno
+            320: { slidesPerView: 3 },   // muito pequeno
             480: { slidesPerView: 3 },   // celular em pé
             640: { slidesPerView: 4 },   // celular deitado / tablet
             768: { slidesPerView: 5 },   // tablet / telas médias
