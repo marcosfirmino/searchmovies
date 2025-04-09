@@ -16,6 +16,7 @@ export default function ActorCarousel({ title, cast }) {
         navigation={cast.length > 6}
         spaceBetween={12}
         breakpoints={{
+          320: { slidesPerView: 3 }, 
           640: { slidesPerView: 3 },
           768: { slidesPerView: 4 },
           1024: { slidesPerView: 6 },
