@@ -90,10 +90,10 @@ export default function MovieDetail() {
               : "/placeholder.png"
           }
           className="max-w-xs rounded-md shadow-md"
-          alt={movie.title}
+          alt={`Poster do filme ${movie.title}`}
         />
         <div className="space-y-3">
-          <p><strong>​📖​ Sinopse:</strong> {movie.overview}</p>
+          <p className="text-justify"><strong>​📖​ Sinopse:</strong> {movie.overview}</p>
           <p><strong>🔞​ Classificação:</strong> {certification && certification !== "N/A" ? certification === "L" ? "Livre" : `${certification}+` : "Não informada"}</p>
           <p><strong>🗓️​ Data de lançamento:</strong> {new Date(movie.release_date).toLocaleDateString("pt-BR")}</p>
           <p><strong>💸​ Orçamento:</strong> {movie.budget > 0? movie.budget.toLocaleString("pt-BR", {style: "currency",currency: "USD"}): "Não informado"}</p>
@@ -103,7 +103,7 @@ export default function MovieDetail() {
           <p><strong>​​​🧬​ Gêneros:</strong> {movie.genres.map(g => g.name).join(", ")}.</p>
           <Link href={`/watch/${id}`}>
           <button className="mt-4 bg-red-600 font-bold inline-flex items-center gap-2 px-4 py-3 border border-white/20 rounded-md text-white hover:bg-white/10 transition duration-200 text-sm md:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/30">
-            <span className="text-base leading-none translate-y-[1px]">🎞️</span>Assistir</button>
+            <span className="text-base leading-none translate-y-[1px]" aria-label={`Assistir ao filme ${movie.title}`}>🎞️</span>Assistir</button>
           </Link>
         </div>
       </div>
