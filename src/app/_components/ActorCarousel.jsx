@@ -20,7 +20,7 @@ export default function ActorCarousel({ title, cast }) {
           640: { slidesPerView: 3 },
           768: { slidesPerView: 4 },
           1024: { slidesPerView: 6 },
-          1920: { slidesPerView: 8 },
+          // 1920: { slidesPerView: 8 },
         }}
 
       >
@@ -34,10 +34,10 @@ export default function ActorCarousel({ title, cast }) {
                     : "/placeholder.png"
                 }
                 alt={actor.name}
-                className="w-full aspect-[2/3] object-cover rounded-md mx-auto"
+                className="w-full aspect-[2/3] object-cover rounded-md"
               />
-              <p className="font-medium pt-2">{actor.name}</p>
-              <p className="text-gray-400 text-xs">({actor.character})</p>
+              <p className="text-base pt-2 font-semibold">{actor.name}</p>
+              <p className="text-gray-400 text-sm">({actor.character})</p>
             </div>
           </SwiperSlide>
         ))}
