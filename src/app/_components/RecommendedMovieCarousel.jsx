@@ -16,15 +16,14 @@ export default function RecommendedCarousel({ title, movies }) {
         spaceBetween={10}
         navigation
         breakpoints={{
-            320: { slidesPerView: 3 },   // muito pequeno
-            480: { slidesPerView: 3 },   // celular em pé
-            640: { slidesPerView: 4 },   // celular deitado / tablet
-            768: { slidesPerView: 5 },   // tablet / telas médias
-            1024: { slidesPerView: 6 },  // desktop e acima
-            1280: { slidesPerView: 6 },  // evita passar de 6
+            320: { slidesPerView: 3 },
+            480: { slidesPerView: 3 },   
+            640: { slidesPerView: 4 }, 
+            768: { slidesPerView: 5 },
+            1024: { slidesPerView: 6 }, 
+            1280: { slidesPerView: 6 },  
   }}
 >
-
         {movies?.map((movie) => (
           <SwiperSlide key={movie.id}>
             <Link href={`/movie/${movie.id}`} className="block">
@@ -32,10 +31,10 @@ export default function RecommendedCarousel({ title, movies }) {
                 <img
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}
-                  className="w-full aspect-[2/3] object-cover rounded-md"
+                  className="w-full aspect-[2/3] object-cover rounded-md border border-transparent hover:border-4 hover:border-red-600 transition duration-150"
                 />
-                <p className="p-2 text-center text-sm">
-                  <span className="font-semibold block truncate">{movie.title}</span> <span className="text-gray-400">({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average?.toFixed(1)}
+                <p className="pt-2 mb-10 text-center">
+                  <span className="font-semibold block truncate text-base">{movie.title}</span> <span className="text-gray-400 text-sm">({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average?.toFixed(1)}
                   </span>
                 </p>
               </div>

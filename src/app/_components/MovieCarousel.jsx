@@ -28,14 +28,14 @@ export default function MovieCarousel({ title, movies }) {
         {movies?.map((movie) => (
           <SwiperSlide key={movie.id}>
             <Link href={`/movie/${movie.id}`} className="block">
-              <div className="overflow-hidden">
+              <div className="overflow-hidden mb-5">
                 <img
                   loading="lazy"
                   src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                   alt={movie.title}
-                  className="w-full aspect-[2/3] object-cover rounded-md"
+                  className="w-full aspect-[2/3] object-cover rounded-md border border-transparent hover:border-4 hover:border-red-600 transition duration-150"
                 />
-                <p className="p-2 text-center text-sm">
+                <p className="mt-2 text-center text-sm">
                   <span className="font-semibold block truncate">{movie.title}</span> <span className="text-gray-400">({new Date(movie.release_date).getFullYear()}) ⭐{movie.vote_average?.toFixed(1)}
                   </span>
                 </p>

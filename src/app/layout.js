@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Roboto } from "next/font/google";
+import Logo from "./_components/Logo";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
       <body className={roboto.className}>
+        <Logo/>
         {children}
       </body>
     </html>

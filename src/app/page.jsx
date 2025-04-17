@@ -1,10 +1,10 @@
-import MovieList from "./_components/MovieList";
-import Search from "./_components/Search";
+import MovieList from "./_components/MovieList"
+import Search from "./_components/Search"
 import Footer from "./_components/Footer"
 
  export default function Home() {
   return (
-    <div className="p-3">
+    <div className="p-4">
       <Search/>
       <MovieList title="Em Alta 🔥" endpoint="movie/popular"/>
       <MovieList title="Bem Avaliados 🧐" endpoint="movie/top_rated"/>
