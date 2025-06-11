@@ -18,6 +18,7 @@ export default function MovieDetail() {
   const [certification, setCertification] = useState(null);
   const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [director, setDirector] = useState("");
+  const [watchProviders, setWatchProviders] = useState([]);
 
   const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
@@ -26,13 +27,11 @@ export default function MovieDetail() {
 
     const fetchData = async () => {
       try {
-        // Dados principais do filme
         const movieRes = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`
         );
         setMovie(movieRes.data);
 
-        // Trailer filme
         const videoRes = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}&language=pt-BR`
         );
@@ -41,7 +40,6 @@ export default function MovieDetail() {
         );
         if (trailer) setVideoKey(trailer.key);
 
-        // Créditos: elenco e diretor
         const creditsRes = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}&language=pt-BR`
         );
@@ -51,7 +49,6 @@ export default function MovieDetail() {
         );
         setDirector(foundDirector?.name || "Não informado");
 
-        // Classificação indicativa
         const releaseDatesRes = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKey}`
         );
@@ -61,13 +58,20 @@ export default function MovieDetail() {
         const cert = brData?.release_dates[0]?.certification;
         setCertification(cert || "N/A");
 
-        // Filmes recomendados
         const recommendedRes = await axios.get(
           `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}&language=pt-BR`
         );
         setRecommendedMovies(
           recommendedRes.data.results.filter((movie) => movie.poster_path)
         );
+
+        // Plataformas onde o filme está disponível no Brasil
+        const providersRes = await axios.get(
+          `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${apiKey}`
+        );
+        const brProviders =
+          providersRes.data.results?.BR?.flatrate || [];
+        setWatchProviders(brProviders);
       } catch (error) {
         console.error("Erro ao buscar dados:", error);
       }
@@ -105,13 +109,15 @@ export default function MovieDetail() {
           className="max-w-xs rounded-md shadow-md"
           alt={`Poster do filme ${movie.title}`}
         />
-        <div className="space-y-3">
+        <div className="space-y-4">
           <p className="text-justify">
             <strong>📖 Sinopse:</strong> {movie.overview}
           </p>
+
           <p>
             <strong>🎬 Diretor:</strong> {director}
           </p>
+
           <p>
             <strong>🔞 Classificação:</strong>{" "}
             {certification && certification !== "N/A"
@@ -120,10 +126,12 @@ export default function MovieDetail() {
                 : `${certification}+`
               : "Não informada"}
           </p>
+
           <p>
             <strong>🗓️ Data de lançamento:</strong>{" "}
             {new Date(movie.release_date).toLocaleDateString("pt-BR")}
           </p>
+
           <p>
             <strong>💸 Orçamento:</strong>{" "}
             {movie.budget > 0
@@ -133,6 +141,7 @@ export default function MovieDetail() {
                 })
               : "Não informado"}
           </p>
+
           <p>
             <strong>💰 Receita:</strong>{" "}
             {movie.revenue > 0
@@ -142,6 +151,7 @@ export default function MovieDetail() {
                 })
               : "Não informada"}
           </p>
+
           <p>
             <strong>⌛ Duração:</strong> {Math.floor(movie.runtime / 60)}h{" "}
             {movie.runtime % 60}min
@@ -150,6 +160,22 @@ export default function MovieDetail() {
             <strong>🧬 Gêneros:</strong>{" "}
             {movie.genres.map((g) => g.name).join(", ")}.
           </p>
+
+          {watchProviders.length > 0 && (
+            <div className="flex items-center flex-wrap gap-2 mt-2">
+              <strong className="mr-2">✔️ Disponível em:</strong>
+              {watchProviders.map((p) => (
+                <img
+                  key={p.provider_id}
+                  src={`https://image.tmdb.org/t/p/w45${p.logo_path}`}
+                  alt={p.provider_name}
+                  title={p.provider_name}
+                  className="h-12 rounded-sm"
+                />
+              ))}
+            </div>
+          )}
+
           <Link href={`/watch/${id}`}>
             <button className="mt-4 bg-red-600 font-bold inline-flex items-center gap-2 px-4 py-3 border border-white/20 rounded-md text-white hover:bg-white/10 transition duration-200 text-sm md:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/30">
               <span
@@ -167,7 +193,7 @@ export default function MovieDetail() {
       {videoKey && (
         <div>
           <h2 className="text-xl font-semibold mb-2 mt-10">
-            📺 ​Trailer Oficial
+            📺 Trailer Oficial
           </h2>
           <div className="aspect-video">
             <iframe
@@ -190,7 +216,7 @@ export default function MovieDetail() {
           movies={recommendedMovies}
         />
       )}
-      <Footer/>
+      <Footer />
     </div>
   );
 }
