@@ -20,12 +20,17 @@ export default function MovieList({ title, endpoint }) {
 
     const fetchMovies = async () => {
       try {
+        // Se o endpoint já tem "?", usa "&", senão "?"
+        const separator = endpoint.includes("?") ? "&" : "?";
+
         const response = await axios.get(
-          `https://api.themoviedb.org/3/${endpoint}?api_key=${apiKey}&language=pt-BR`
+          `https://api.themoviedb.org/3/${endpoint}${separator}api_key=${apiKey}&language=pt-BR`
         );
         setMovies(response.data.results || []);
+        setError(null);
       } catch (err) {
         setError("Falha ao carregar os filmes. Tente novamente mais tarde.");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -35,11 +40,9 @@ export default function MovieList({ title, endpoint }) {
   }, [endpoint, apiKey]);
 
   if (loading) {
-    return (
-      <LoadingSpinner/>
-);
+    return <LoadingSpinner />;
   }
-  
+
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   if (movies.length === 0) return <p>Nenhum filme encontrado.</p>;
