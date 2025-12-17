@@ -7,7 +7,7 @@ import SectionTitle from "@/components/ui/SectionTitle";
 
 export default function TechInfoSection({ director, releaseDate, budget, revenue, runtime }) {
   return (
-    <div className="border-t border-white/10 pt-8">
+    <div className="border-t border-white/10 pt-6 md:pt-8">
       <SectionTitle>Informações Técnicas</SectionTitle>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {director && (

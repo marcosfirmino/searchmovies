@@ -90,7 +90,7 @@ export default function MovieDetailPage() {
   return (
     <div className="min-h-screen bg-[#020617] overflow-x-hidden">
       {/* Hero Section */}
-      <div className="relative w-full h-[70vh] bg-gray-800">
+      <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[55vh] lg:h-[60vh] xl:h-[65vh] 2xl:h-[70vh] bg-gray-800">
         <div className="absolute inset-0">
           <img
             src={heroImgSrc}
@@ -108,26 +108,26 @@ export default function MovieDetailPage() {
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 group cursor-pointer"
               aria-label="Reproduzir trailer"
             >
-              <div className="flex items-center gap-3 bg-black/60 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 hover:bg-red-600/80 hover:border-red-500 transition-all">
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-black/60 backdrop-blur-md rounded-full px-2.5 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 lg:px-5 lg:py-2.5 xl:px-6 xl:py-3 border border-white/20 hover:bg-red-600/80 hover:border-red-500 transition-all">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="36"
-                  height="36"
+                  width="16"
+                  height="16"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="text-white group-hover:scale-110 transition-transform"
+                  className="text-white group-hover:scale-110 transition-transform sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-9 xl:h-9"
                 >
                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                 </svg>
-                <span className="text-white font-semibold text-base">Assistir Trailer</span>
+                <span className="text-white font-semibold text-xs sm:text-xs md:text-sm lg:text-sm xl:text-base">Assistir Trailer</span>
               </div>
             </button>
           )}
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 flex flex-col md:flex-row gap-10 items-start">
+        <div className="absolute bottom-0 left-0 w-full p-8 sm:p-5 md:p-5 lg:p-7 xl:p-8 2xl:p-8 pt-8 sm:pt-10 md:pt-12 lg:pt-14 xl:pt-16 2xl:pt-20 flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 xl:gap-10 items-start">
           {/* Poster Flutuante */}
-          <div className="hidden md:block w-64 aspect-[2/3] rounded-lg overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 bg-gray-800">
+          <div className="hidden md:block w-36 lg:w-44 xl:w-52 2xl:w-64 aspect-[2/3] rounded-lg overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 bg-gray-800">
             <img
               src={posterImgSrc}
               onError={handlePosterError}
@@ -137,44 +137,45 @@ export default function MovieDetailPage() {
           </div>
 
           {/* Informações Principais */}
-          <div className="flex-1 space-y-6">
-            <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex-1 space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-5 xl:space-y-6 pt-2 sm:pt-3 md:pt-4 lg:pt-4 xl:pt-0">
+            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3 flex-wrap">
               {movie.genres?.slice(0, 3).map((genre) => (
                 <span
                   key={genre.id}
-                  className="px-3 py-1 bg-white/10 backdrop-blur border border-white/20 rounded text-xs uppercase tracking-wider"
+                  className="px-2 py-0.5 sm:px-2.5 sm:py-1 md:px-3 md:py-1 bg-white/10 backdrop-blur border border-white/20 rounded text-xs uppercase tracking-wider"
                 >
                   {genre.name}
                 </span>
               ))}
               {certification && (
-                <span className="px-3 py-1 bg-white/10 backdrop-blur border border-white/20 rounded text-xs font-semibold">
+                <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 md:px-3 md:py-1 bg-white/10 backdrop-blur border border-white/20 rounded text-xs font-semibold">
                   {certification}
                 </span>
               )}
-              <span className="px-3 py-1 bg-yellow-500 text-black rounded text-sm font-extrabold">
+              <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 md:px-3 md:py-1 bg-yellow-500 text-black rounded text-xs sm:text-xs md:text-sm font-extrabold">
                 {formatRating(movie.vote_average)} IMDb
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-7xl font-bold text-white tracking-tight leading-none">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-7xl font-bold text-white tracking-tight leading-tight md:leading-none">
               {movie.title}
             </h1>
 
-            <p className="text-gray-300 text-base md:text-lg max-w-2xl leading-relaxed">
+            <p className="text-gray-300 text-xs sm:text-xs md:text-sm lg:text-base xl:text-lg max-w-2xl leading-relaxed">
               {movie.overview || "Sinopse não disponível."}
             </p>
 
-            <div className="flex items-center gap-4 pt-4 flex-wrap">
+            <div className="flex items-center gap-3 sm:gap-4 pt-3 sm:pt-4 flex-wrap">
               <a href={`/watch/${movie.id}`}>
-                <Button variant="primary" size="md" className="flex items-center gap-2">
+                <Button variant="primary" size="md" className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="currentColor"
                     stroke="none"
+                    className="sm:w-5 sm:h-5 md:w-5 md:h-5"
                   >
                     <polygon points="5 3 19 12 5 21 5 3" />
                   </svg>
@@ -187,7 +188,7 @@ export default function MovieDetailPage() {
       </div>
 
       {/* Conteúdo Abaixo do Hero */}
-      <div className="relative z-10 px-8 md:px-16 pt-20 pb-24 space-y-16">
+      <div className="relative z-10 px-4 sm:px-6 md:px-8 pt-6 sm:pt-8 md:pt-10 lg:pt-12 xl:pt-16 2xl:pt-20 pb-6 sm:pb-8 md:pb-10 lg:pb-12 xl:pb-16 2xl:pb-24 space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-10 xl:space-y-12 2xl:space-y-16">
         {/* Infos Técnicas */}
         <TechInfoSection
           director={director}
@@ -209,6 +210,7 @@ export default function MovieDetailPage() {
             title="Você também pode gostar"
             movies={recommendedMovies.slice(0, 10)}
             onMovieClick={handleMovieClick}
+            noPadding={true}
           />
         )}
       </div>

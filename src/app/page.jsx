@@ -36,7 +36,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen font-sans selection:bg-red-600 selection:text-white pb-20 overflow-x-hidden">
+    <div className="min-h-screen font-sans selection:bg-red-600 selection:text-white overflow-x-hidden">
       {/* Hero Section com Busca */}
       <HeroSearch onMovieClick={handleMovieClick} />
 

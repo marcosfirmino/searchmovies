@@ -13,17 +13,17 @@ export default function CastCarousel({ cast }) {
   if (!cast || cast.length === 0) return null;
 
   return (
-    <div className="border-t border-white/10 pt-8">
+    <div className="border-t border-white/10 pt-6 md:pt-8">
       <SectionTitle>Elenco</SectionTitle>
       <Swiper
         modules={[Navigation]}
-        spaceBetween={16}
+        spaceBetween={12}
         slidesPerView="auto"
         navigation={cast.length > 6}
         watchOverflow={true}
         watchSlidesProgress={true}
         loop={false}
-        className="!pt-2 !pb-2 !pr-0"
+        className="!pt-4 !pb-8"
       >
         {cast.map((actor) => (
           <SwiperSlide key={actor.id} style={{ width: '170px', flexShrink: 0 }}>

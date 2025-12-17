@@ -49,14 +49,14 @@ export default function WatchMovie() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen px-4 p-2 pt-24">
-      <div className="flex-grow flex items-center justify-center">
+    <div className="flex flex-col min-h-screen pt-20 md:pt-24">
+      <div className="flex-grow flex items-center justify-center px-4 sm:px-6 md:px-8">
         <div className="w-full max-w-3xl 2xl:max-w-7xl mx-auto">
-          <div className="text-center pb-4">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+          <div className="text-center pb-4 md:pb-6">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               {movie.title}
             </h1>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-400 text-sm sm:text-base md:text-lg">
               ({formatYear(movie.release_date)}) ⭐
               <span className="text-yellow-400">{formatRating(movie.vote_average)}</span>
             </p>
@@ -64,7 +64,7 @@ export default function WatchMovie() {
           <div className="aspect-video rounded-lg overflow-hidden shadow-lg"><iframe src={embedUrl} className="w-full h-full" allowFullScreen></iframe></div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

@@ -17,7 +17,7 @@ import "swiper/css/navigation";
  * - Design moderno
  * - Integrado com MovieCard
  */
-export default function MovieCarouselModern({ title, movies, onMovieClick }) {
+export default function MovieCarouselModern({ title, movies, onMovieClick, noPadding = false }) {
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function MovieCarouselModern({ title, movies, onMovieClick }) {
   if (!movies || movies.length === 0) return null;
 
   return (
-    <div className="mb-12 px-8 animate-fade-in-up">
+    <div className={`mb-6 sm:mb-8 md:mb-10 lg:mb-12 ${noPadding ? '' : 'px-4 sm:px-6 md:px-8'} animate-fade-in-up`}>
       <SectionTitle>{title}</SectionTitle>
       <Swiper
         onSwiper={(swiper) => {
@@ -58,7 +58,7 @@ export default function MovieCarouselModern({ title, movies, onMovieClick }) {
         className="!pt-4 !pb-8"
       >
         {movies.map((movie) => (
-          <SwiperSlide key={movie.id} style={{ width: '200px', flexShrink: 0, padding: '16px 12px' }}>
+          <SwiperSlide key={movie.id} style={{ width: '160px', flexShrink: 0, padding: '12px 8px' }} className="sm:!w-[180px] md:!w-[200px] sm:!p-[14px_10px] md:!p-[16px_12px]">
             <MovieCard movie={movie} onClick={onMovieClick} />
           </SwiperSlide>
         ))}

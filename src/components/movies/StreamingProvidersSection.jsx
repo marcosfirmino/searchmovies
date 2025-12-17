@@ -13,7 +13,7 @@ export default function StreamingProvidersSection({ watchProviders }) {
   }
 
   return (
-    <div className="border-t border-white/10 pt-8">
+    <div className="border-t border-white/10 pt-6 md:pt-8">
       <SectionTitle>Onde Assistir</SectionTitle>
       <div className="flex flex-wrap gap-4">
         {flatrateProviders.map((provider) => (

@@ -9,8 +9,8 @@
 
 export default function SectionTitle({ children, icon = null, variant = "default" }) {
   const variants = {
-    default: "text-2xl font-bold text-white mb-6 flex items-center gap-3",
-    gradient: "text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3",
+    default: "text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold text-white mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 2xl:mb-6 flex items-center gap-2 sm:gap-2 md:gap-3",
+    gradient: "text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold mb-2 sm:mb-3 md:mb-4 lg:mb-5 xl:mb-6 2xl:mb-6 flex items-center gap-2 sm:gap-2 md:gap-3",
   };
 
   const barVariants = {
