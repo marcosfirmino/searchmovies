@@ -1,86 +1,73 @@
 "use client";
 
-import Link from "next/link";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useParams, useRouter } from "next/navigation";
+import { getImageUrl } from "@/services/tmdb";
+import { formatYear, formatRating } from "@/utils/formatters";
+import Button from "@/components/ui/Button";
+import { useMovieDetail } from "@/hooks/useMovieDetail";
 import LoadingSpinner from "@/app/_components/LoadingSpinner";
 import Footer from "@/app/_components/Footer";
-import BackButton from "@/app/_components/BackButton";
-import ActorCarousel from "@/app/_components/ActorCarousel";
-import RecommendedMovieCarousel from "@/app/_components/RecommendedMovieCarousel";
+import ErrorMessage from "@/components/ui/ErrorMessage";
+import TechInfoSection from "@/components/movies/TechInfoSection";
+import StreamingProvidersSection from "@/components/movies/StreamingProvidersSection";
+import CastCarousel from "@/components/movies/CastCarousel";
+import MovieCarouselModern from "@/components/movies/MovieCarouselModern";
 
-export default function MovieDetail() {
+export default function MovieDetailPage() {
   const { id } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [videoKey, setVideoKey] = useState(null);
-  const [cast, setCast] = useState([]);
-  const [certification, setCertification] = useState(null);
-  const [recommendedMovies, setRecommendedMovies] = useState([]);
-  const [director, setDirector] = useState("");
-  const [watchProviders, setWatchProviders] = useState([]);
+  const router = useRouter();
+  const [heroImgSrc, setHeroImgSrc] = useState("/placeholder.png");
+  const [posterImgSrc, setPosterImgSrc] = useState("/placeholder.png");
+  const [heroError, setHeroError] = useState(false);
+  const [posterError, setPosterError] = useState(false);
+  const [showTrailer, setShowTrailer] = useState(false);
 
-  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+  const {
+    movie,
+    videoKey,
+    cast,
+    director,
+    certification,
+    recommendedMovies,
+    watchProviders,
+    loading,
+    error,
+  } = useMovieDetail(id);
 
   useEffect(() => {
-    if (!id) return;
-
-    const fetchData = async () => {
-      try {
-        const movieRes = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`
-        );
-        setMovie(movieRes.data);
-
-        const videoRes = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}&language=pt-BR`
-        );
-        const trailer = videoRes.data.results.find(
-          (vid) => vid.type === "Trailer" && vid.site === "YouTube"
-        );
-        if (trailer) setVideoKey(trailer.key);
-
-        const creditsRes = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}&language=pt-BR`
-        );
-        setCast(creditsRes.data.cast.slice(0, 12));
-        const foundDirector = creditsRes.data.crew.find(
-          (person) => person.job === "Director"
-        );
-        setDirector(foundDirector?.name || "Não informado");
-
-        const releaseDatesRes = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${apiKey}`
-        );
-        const brData = releaseDatesRes.data.results.find(
-          (item) => item.iso_3166_1 === "BR"
-        );
-        const cert = brData?.release_dates[0]?.certification;
-        setCertification(cert || "N/A");
-
-        const recommendedRes = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=${apiKey}&language=pt-BR`
-        );
-        setRecommendedMovies(
-          recommendedRes.data.results.filter((movie) => movie.poster_path)
-        );
-
-        // Plataformas onde o filme está disponível no Brasil
-        const providersRes = await axios.get(
-          `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${apiKey}`
-        );
-        const brProviders =
-          providersRes.data.results?.BR?.flatrate || [];
-        setWatchProviders(brProviders);
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
+    if (movie) {
+      if (movie.backdrop_path) {
+        setHeroImgSrc(getImageUrl(movie.backdrop_path, "original"));
+        setHeroError(false);
       }
-    };
+      if (movie.poster_path) {
+        setPosterImgSrc(getImageUrl(movie.poster_path, "w500"));
+        setPosterError(false);
+      }
+    }
+  }, [movie]);
 
-    fetchData();
-  }, [id]);
+  const handleHeroError = () => {
+    if (!heroError) {
+      setHeroError(true);
+      setHeroImgSrc("/placeholder.png");
+    }
+  };
 
-  if (!movie) {
+  const handlePosterError = () => {
+    if (!posterError) {
+      setPosterError(true);
+      setPosterImgSrc("/placeholder.png");
+    }
+  };
+
+  const handleMovieClick = (movie) => {
+    router.push(`/movie/${movie.id}`);
+  };
+
+
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner />
@@ -88,134 +75,185 @@ export default function MovieDetail() {
     );
   }
 
-  return (
-    <div className="p-2 max-w-5xl mx-auto">
-      <BackButton />
-      <div className="text-center mb-2">
-        <h1 className="text-3xl font-bold">{movie.title}</h1>
-        <p className="text-gray-400">
-          ({new Date(movie.release_date).getFullYear()}) ⭐
-          {movie.vote_average.toFixed(1)}
-        </p>
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <ErrorMessage message={error} />
       </div>
+    );
+  }
 
-      <div className="flex flex-col md:flex-row gap-6 items-center">
-        <img
-          src={
-            movie.poster_path
-              ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-              : "/placeholder.png"
-          }
-          className="max-w-xs rounded-md shadow-md"
-          alt={`Poster do filme ${movie.title}`}
-        />
-        <div className="space-y-4">
-          <p className="text-justify">
-            <strong>📖 Sinopse:</strong> {movie.overview}
-          </p>
+  if (!movie) {
+    return null;
+  }
 
-          <p>
-            <strong>🎬 Diretor:</strong> {director}
-          </p>
-
-          <p>
-            <strong>🔞 Classificação:</strong>{" "}
-            {certification && certification !== "N/A"
-              ? certification === "L"
-                ? "Livre"
-                : `${certification}+`
-              : "Não informada"}
-          </p>
-
-          <p>
-            <strong>🗓️ Data de lançamento:</strong>{" "}
-            {new Date(movie.release_date).toLocaleDateString("pt-BR")}
-          </p>
-
-          <p>
-            <strong>💸 Orçamento:</strong>{" "}
-            {movie.budget > 0
-              ? movie.budget.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "USD",
-                })
-              : "Não informado"}
-          </p>
-
-          <p>
-            <strong>💰 Receita:</strong>{" "}
-            {movie.revenue > 0
-              ? movie.revenue.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "USD",
-                })
-              : "Não informada"}
-          </p>
-
-          <p>
-            <strong>⌛ Duração:</strong> {Math.floor(movie.runtime / 60)}h{" "}
-            {movie.runtime % 60}min
-          </p>
-          <p>
-            <strong>🧬 Gêneros:</strong>{" "}
-            {movie.genres.map((g) => g.name).join(", ")}.
-          </p>
-
-          {watchProviders.length > 0 && (
-            <div className="flex items-center flex-wrap gap-2 mt-2">
-              <strong className="mr-2">✔️ Disponível em:</strong>
-              {watchProviders.map((p) => (
-                <img
-                  key={p.provider_id}
-                  src={`https://image.tmdb.org/t/p/w45${p.logo_path}`}
-                  alt={p.provider_name}
-                  title={p.provider_name}
-                  className="h-12 rounded-sm"
-                />
-              ))}
-            </div>
-          )}
-
-          <Link href={`/watch/${id}`}>
-            <button className="mt-4 bg-red-600 font-bold inline-flex items-center gap-2 px-4 py-3 border border-white/20 rounded-md text-white hover:bg-white/10 transition duration-200 text-sm md:text-base cursor-pointer focus:outline-none focus:ring-2 focus:ring-white/30">
-              <span
-                className="text-base leading-none translate-y-[1px]"
-                aria-label={`Assistir ao filme ${movie.title}`}
-              >
-                🎞️
-              </span>
-              Assistir
+  return (
+    <div className="min-h-screen bg-[#020617] overflow-x-hidden">
+      {/* Hero Section */}
+      <div className="relative w-full h-[70vh] bg-gray-800">
+        <div className="absolute inset-0">
+          <img
+            src={heroImgSrc}
+            onError={handleHeroError}
+            className="w-full h-full object-cover opacity-60 transition-opacity"
+            alt={movie.title}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/30 to-transparent"></div>
+          
+          {/* Botão Play Trailer */}
+          {videoKey && (
+            <button
+              onClick={() => setShowTrailer(true)}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 group cursor-pointer"
+              aria-label="Reproduzir trailer"
+            >
+              <div className="flex items-center gap-3 bg-black/60 backdrop-blur-md rounded-full px-6 py-3 border border-white/20 hover:bg-red-600/80 hover:border-red-500 transition-all">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="36"
+                  height="36"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="text-white group-hover:scale-110 transition-transform"
+                >
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                <span className="text-white font-semibold text-base">Assistir Trailer</span>
+              </div>
             </button>
-          </Link>
+          )}
+        </div>
+
+        <div className="absolute bottom-0 left-0 w-full p-8 md:p-16 flex flex-col md:flex-row gap-10 items-start">
+          {/* Poster Flutuante */}
+          <div className="hidden md:block w-64 aspect-[2/3] rounded-lg overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 bg-gray-800">
+            <img
+              src={posterImgSrc}
+              onError={handlePosterError}
+              className="w-full h-full object-cover"
+              alt={movie.title}
+            />
+          </div>
+
+          {/* Informações Principais */}
+          <div className="flex-1 space-y-6">
+            <div className="flex items-center gap-3 flex-wrap">
+              {movie.genres?.slice(0, 3).map((genre) => (
+                <span
+                  key={genre.id}
+                  className="px-3 py-1 bg-white/10 backdrop-blur border border-white/20 rounded text-xs uppercase tracking-wider"
+                >
+                  {genre.name}
+                </span>
+              ))}
+              {certification && (
+                <span className="px-3 py-1 bg-white/10 backdrop-blur border border-white/20 rounded text-xs font-semibold">
+                  {certification}
+                </span>
+              )}
+              <span className="px-3 py-1 bg-yellow-500 text-black rounded text-sm font-extrabold">
+                {formatRating(movie.vote_average)} IMDb
+              </span>
+            </div>
+
+            <h1 className="text-4xl md:text-7xl font-bold text-white tracking-tight leading-none">
+              {movie.title}
+            </h1>
+
+            <p className="text-gray-300 text-base md:text-lg max-w-2xl leading-relaxed">
+              {movie.overview || "Sinopse não disponível."}
+            </p>
+
+            <div className="flex items-center gap-4 pt-4 flex-wrap">
+              <a href={`/watch/${movie.id}`}>
+                <Button variant="primary" size="md" className="flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    stroke="none"
+                  >
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                  Assistir Agora
+                </Button>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
-      {videoKey && (
-        <div>
-          <h2 className="text-xl font-semibold mb-2 mt-10">
-            📺 Trailer Oficial
-          </h2>
-          <div className="aspect-video">
+      {/* Conteúdo Abaixo do Hero */}
+      <div className="relative z-10 px-8 md:px-16 pt-20 pb-24 space-y-16">
+        {/* Infos Técnicas */}
+        <TechInfoSection
+          director={director}
+          releaseDate={movie.release_date}
+          budget={movie.budget}
+          revenue={movie.revenue}
+          runtime={movie.runtime}
+        />
+
+        {/* Plataformas de Streaming */}
+        <StreamingProvidersSection watchProviders={watchProviders} />
+
+        {/* Carrossel de Elenco */}
+        <CastCarousel cast={cast} />
+
+        {/* Carrossel de Relacionados */}
+        {recommendedMovies.length > 0 && (
+          <MovieCarouselModern
+            title="Você também pode gostar"
+            movies={recommendedMovies.slice(0, 10)}
+            onMovieClick={handleMovieClick}
+          />
+        )}
+      </div>
+
+      {/* Modal do Trailer */}
+      {showTrailer && videoKey && (
+        <div
+          className="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300"
+          onClick={() => setShowTrailer(false)}
+        >
+          <div
+            className="relative w-full max-w-5xl aspect-video bg-black rounded-lg overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
             <iframe
-              className="w-full h-full rounded-md"
-              src={`https://www.youtube.com/embed/${videoKey}`}
+              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${videoKey}?autoplay=1&rel=0`}
               title="Trailer"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
+            <button
+              onClick={() => setShowTrailer(false)}
+              className="absolute top-4 right-4 z-20 p-3 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white hover:bg-white hover:text-black transition-all"
+              aria-label="Fechar trailer"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </button>
           </div>
         </div>
       )}
 
-      {cast.length > 0 && (
-        <ActorCarousel title="🫂 Elenco Principal" cast={cast} />
-      )}
-
-      {recommendedMovies.length > 0 && (
-        <RecommendedMovieCarousel
-          title="🎯 Recomendados para você"
-          movies={recommendedMovies}
-        />
-      )}
       <Footer />
     </div>
   );
