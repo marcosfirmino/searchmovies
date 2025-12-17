@@ -1,68 +1,98 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-import MovieList from "./MovieList";
+import { useGenres } from "@/hooks/useGenres";
+import { useMovies } from "@/hooks/useMovies";
+import MovieCarouselModern from "@/components/movies/MovieCarouselModern";
+import GenreTag from "@/components/ui/GenreTag";
 import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "@/components/ui/ErrorMessage";
 
-export default function GenreMovieSection() {
-  const [genres, setGenres] = useState([]);
+/**
+ * Componente de Seção de Gêneros com Carrossel
+ * 
+ * CARACTERÍSTICAS:
+ * - Mostra botões de gêneros com design moderno
+ * - Quando seleciona um gênero, mostra carrossel de filmes
+ * - Integrado com o novo design Search-First
+ */
+export default function GenreMovieSection({ onMovieClick }) {
   const [selectedGenre, setSelectedGenre] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const apiKey = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+  
+  // Hook customizado gerencia busca de gêneros
+  const { genres, loading: genresLoading, error: genresError } = useGenres();
 
+  // Busca filmes do gênero selecionado
+  const { movies, loading: moviesLoading, error: moviesError } = useMovies(
+    selectedGenre ? `discover/movie?with_genres=${selectedGenre}` : null
+  );
+
+  // Seleciona o primeiro gênero automaticamente quando carregar
   useEffect(() => {
-    const fetchGenres = async () => {
-      try {
-        setLoading(true);
+    if (genres.length > 0 && !selectedGenre) {
+      setSelectedGenre(genres[0].id);
+    }
+  }, [genres, selectedGenre]);
 
-        const res = await axios.get(
-          `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=pt-BR`
-        );
-        const allGenres = res.data.genres;
-        setGenres(allGenres);
-
-        if (allGenres.length > 0) {
-          setSelectedGenre(allGenres[0].id);
-        }
-      } catch (err) {
-        console.error("Erro ao carregar gêneros:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchGenres();
-  }, [apiKey]);
-
-  if (loading) {
-    return <LoadingSpinner />;
+  // Não mostra spinner aqui durante carregamento inicial (já é mostrado na página principal)
+  if (genresLoading) {
+    return null;
   }
 
+  if (genresError) {
+    return <ErrorMessage message={genresError} />;
+  }
+
+  const selectedGenreName = genres.find((g) => g.id === selectedGenre)?.name;
+
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-2">​​​​🎭​ Escolha um Gênero</h2>
-      <div className="flex flex-wrap gap-3">
-        {genres.map((genre) => (
-          <button
-            key={genre.id}
-            onClick={() => setSelectedGenre(genre.id)}
-            className={`px-2 py-2 rounded-md border-2 cursor-pointer text-md transition-150 ${
-              selectedGenre === genre.id
-                ? "bg-red-600 text-white "
-                : "bg-white text-black border-gray-100 hover:border-red-600"
-            }`}
-          >
-            {genre.name}
-          </button>
-        ))}
+    <div className="mb-12">
+      {/* Título e Filtros de Gênero */}
+      <div className="mb-8 px-8">
+        <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3">
+          <span className="w-1 h-6 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></span>
+          <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+            🎭 Explore por Gênero
+          </span>
+        </h2>
+        
+        <div className="flex flex-wrap gap-3">
+          {genres.map((genre) => (
+            <GenreTag
+              key={genre.id}
+              label={genre.name}
+              active={selectedGenre === genre.id}
+              onClick={() => setSelectedGenre(genre.id)}
+            />
+          ))}
+        </div>
       </div>
 
+      {/* Carrossel de Filmes do Gênero Selecionado */}
       {selectedGenre && (
-        <MovieList
-          title={`Filmes de ${genres.find((g) => g.id === selectedGenre)?.name}`}
-          endpoint={`discover/movie?with_genres=${selectedGenre}`}
-        />
+        <div>
+          {moviesLoading && (
+            <div className="flex justify-center py-20">
+              <LoadingSpinner />
+            </div>
+          )}
+          
+          {moviesError && <ErrorMessage message={moviesError} />}
+          
+          {!moviesLoading && !moviesError && movies.length > 0 && (
+            <MovieCarouselModern
+              title={`Filmes de ${selectedGenreName}`}
+              movies={movies}
+              onMovieClick={onMovieClick}
+            />
+          )}
+          
+          {!moviesLoading && !moviesError && movies.length === 0 && (
+            <div className="text-center py-20 text-gray-500 px-8">
+              <p className="text-xl">Nenhum filme encontrado para este gênero.</p>
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
