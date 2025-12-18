@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${roboto.className} overflow-x-hidden`}>
         {/* Header Minimalista */}
-        <nav className="fixed top-0 left-0 right-0 w-full z-50 px-8 py-6 flex justify-between items-center bg-gradient-to-b from-[#020617]/95 via-[#020617]/80 to-transparent">
+        <nav className="absolute top-0 left-0 right-0 w-full z-50 px-8 py-2 flex justify-between items-center bg-gradient-to-b from-[#020617]/95 via-[#020617]/80 to-transparent">
           <Logo />
         </nav>
         {children}

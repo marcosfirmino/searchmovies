@@ -13,20 +13,20 @@ export default function CastCarousel({ cast }) {
   if (!cast || cast.length === 0) return null;
 
   return (
-    <div className="border-t border-white/10 pt-8">
+    <div className="border-t border-white/10 pt-6 md:pt-8 2xl:pt-10">
       <SectionTitle>Elenco</SectionTitle>
       <Swiper
         modules={[Navigation]}
-        spaceBetween={16}
+        spaceBetween={12}
         slidesPerView="auto"
         navigation={cast.length > 6}
         watchOverflow={true}
         watchSlidesProgress={true}
         loop={false}
-        className="!pt-2 !pb-2 !pr-0"
+        className="!pt-4 !pb-8 2xl:!pt-6 2xl:!pb-10"
       >
         {cast.map((actor) => (
-          <SwiperSlide key={actor.id} style={{ width: '170px', flexShrink: 0 }}>
+          <SwiperSlide key={actor.id} style={{ width: "clamp(170px, 12vw, 230px)", flexShrink: 0 }}>
             <div className="text-center group cursor-pointer">
               <div className="aspect-[2/3] rounded-lg overflow-hidden mb-3 bg-gray-800 border border-white/10 group-hover:border-red-600/50 transition-all group-hover:scale-105">
                 {actor.profile_path ? (
@@ -55,8 +55,8 @@ export default function CastCarousel({ cast }) {
                   </div>
                 )}
               </div>
-              <h3 className="text-white font-semibold text-sm leading-tight">{actor.name}</h3>
-              <p className="text-gray-400 text-xs mt-1">{actor.character}</p>
+              <h3 className="text-white font-semibold text-sm 2xl:text-base leading-tight">{actor.name}</h3>
+              <p className="text-gray-400 text-xs 2xl:text-sm mt-1">{actor.character}</p>
             </div>
           </SwiperSlide>
         ))}

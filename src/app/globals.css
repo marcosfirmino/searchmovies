@@ -149,3 +149,8 @@ body {
 .animate-slide-up {
   animation: slideUp 0.5s ease-out;
 }
+
+/* Background gradient para uso em componentes */
+.bg-body-gradient {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+}
