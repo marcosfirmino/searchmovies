@@ -13,22 +13,22 @@ export default function StreamingProvidersSection({ watchProviders }) {
   }
 
   return (
-    <div className="border-t border-white/10 pt-6 md:pt-8">
+    <div className="border-t border-white/10 pt-6 md:pt-8 2xl:pt-10">
       <SectionTitle>Onde Assistir</SectionTitle>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-4 2xl:gap-6">
         {flatrateProviders.map((provider) => (
           <div
             key={provider.provider_id}
-            className="flex items-center gap-2 bg-white/5 rounded-lg p-3 border border-white/10 hover:border-red-600/50 transition-colors"
+            className="flex items-center gap-2 bg-white/5 rounded-lg p-3 2xl:p-4 border border-white/10 hover:border-red-600/50 transition-colors"
           >
             {provider.logo_path && (
               <img
                 src={getImageUrl(provider.logo_path, "w92")}
                 alt={provider.provider_name}
-                className="w-8 h-8 object-contain"
+                className="w-8 h-8 2xl:w-10 2xl:h-10 object-contain"
               />
             )}
-            <span className="text-white text-sm font-medium">{provider.provider_name}</span>
+            <span className="text-white text-sm 2xl:text-base font-medium">{provider.provider_name}</span>
           </div>
         ))}
       </div>

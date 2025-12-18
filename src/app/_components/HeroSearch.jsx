@@ -54,7 +54,7 @@ export default function HeroSearch({ onMovieClick }) {
           </div>
           <input
             type="text"
-            placeholder="Filmes, séries..."
+            placeholder="Encontre seu próximo filme"
             className="w-full bg-transparent border-none outline-none text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl text-white placeholder-gray-500 h-10 sm:h-11 md:h-12 lg:h-12 xl:h-[52px] 2xl:h-14"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

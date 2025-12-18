@@ -58,7 +58,11 @@ export default function MovieCarouselModern({ title, movies, onMovieClick, noPad
         className="!pt-4 !pb-8"
       >
         {movies.map((movie) => (
-          <SwiperSlide key={movie.id} style={{ width: '160px', flexShrink: 0, padding: '12px 8px' }} className="sm:!w-[180px] md:!w-[200px] sm:!p-[14px_10px] md:!p-[16px_12px]">
+          <SwiperSlide
+            key={movie.id}
+            style={{ width: "160px", flexShrink: 0, padding: "12px 8px" }}
+            className="sm:!w-[180px] md:!w-[200px] sm:!p-[14px_10px] md:!p-[16px_12px]"
+          >
             <MovieCard movie={movie} onClick={onMovieClick} />
           </SwiperSlide>
         ))}
