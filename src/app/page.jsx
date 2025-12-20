@@ -7,6 +7,7 @@ import GenreMovieSection from "./_components/GenreMovieSection";
 import MovieCarouselModern from "@/components/movies/MovieCarouselModern";
 import Footer from "./_components/Footer";
 import LoadingSpinner from "./_components/LoadingSpinner";
+import MovieCarouselSkeleton from "@/components/movies/MovieCarouselSkeleton";
 import { Flame, Star, Popcorn } from "lucide-react";
 
 export default function Home() {
@@ -27,15 +28,6 @@ export default function Home() {
     (topRatedMovies.loading && topRatedMovies.movies.length === 0) ||
     (nowPlayingMovies.loading && nowPlayingMovies.movies.length === 0);
 
-  // Se está carregando inicialmente, mostra apenas o spinner centralizado
-  if (isInitialLoading) {
-    return (
-      <div className="min-h-screen font-sans selection:bg-red-600 selection:text-white flex items-center justify-center bg-[#020617]">
-        <LoadingSpinner size="large" className="py-0" />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen font-sans selection:bg-red-600 selection:text-white overflow-x-hidden">
       {/* Hero Section com Busca */}
@@ -46,41 +38,58 @@ export default function Home() {
         {/* Seção de Gêneros */}
         <GenreMovieSection onMovieClick={handleMovieClick} />
 
-        {/* Carrosséis de Filmes Populares */}
-        {popularMovies.movies.length > 0 && (
-          <MovieCarouselModern
-            title={
-              <span className="inline-flex items-center gap-2">
-                Em Alta <Flame className="w-6 h-6 text-red-600 flex-shrink-0" />
-              </span>
-            }
-            movies={popularMovies.movies}
-            onMovieClick={handleMovieClick}
-          />
-        )}
+        {/* Skeletons durante carregamento inicial */}
+        {isInitialLoading ? (
+          <>
+            <MovieCarouselSkeleton title="Em Alta" />
+            <MovieCarouselSkeleton title="Bem Avaliados" />
+            <MovieCarouselSkeleton title="Nos Cinemas" />
+          </>
+        ) : (
+          <>
+            {/* Carrosséis de Filmes Populares */}
+            {popularMovies.loading && popularMovies.movies.length === 0 ? (
+              <MovieCarouselSkeleton title="Em Alta" />
+            ) : popularMovies.movies.length > 0 ? (
+              <MovieCarouselModern
+                title={
+                  <span className="inline-flex items-center gap-2">
+                    Em Alta <Flame className="w-6 h-6 text-red-600 flex-shrink-0" />
+                  </span>
+                }
+                movies={popularMovies.movies}
+                onMovieClick={handleMovieClick}
+              />
+            ) : null}
 
-        {topRatedMovies.movies.length > 0 && (
-          <MovieCarouselModern
-            title={
-              <span className="inline-flex items-center gap-2">
-                Bem Avaliados <Star className="w-6 h-6 text-red-600 flex-shrink-0" />
-              </span>
-            }
-            movies={topRatedMovies.movies}
-            onMovieClick={handleMovieClick}
-          />
-        )}
+            {topRatedMovies.loading && topRatedMovies.movies.length === 0 ? (
+              <MovieCarouselSkeleton title="Bem Avaliados" />
+            ) : topRatedMovies.movies.length > 0 ? (
+              <MovieCarouselModern
+                title={
+                  <span className="inline-flex items-center gap-2">
+                    Bem Avaliados <Star className="w-6 h-6 text-red-600 flex-shrink-0" />
+                  </span>
+                }
+                movies={topRatedMovies.movies}
+                onMovieClick={handleMovieClick}
+              />
+            ) : null}
 
-        {nowPlayingMovies.movies.length > 0 && (
-          <MovieCarouselModern
-            title={
-              <span className="inline-flex items-center gap-2">
-                Nos Cinemas <Popcorn className="w-6 h-6 text-red-600 flex-shrink-0" />
-              </span>
-            }
-            movies={nowPlayingMovies.movies}
-            onMovieClick={handleMovieClick}
-          />
+            {nowPlayingMovies.loading && nowPlayingMovies.movies.length === 0 ? (
+              <MovieCarouselSkeleton title="Nos Cinemas" />
+            ) : nowPlayingMovies.movies.length > 0 ? (
+              <MovieCarouselModern
+                title={
+                  <span className="inline-flex items-center gap-2">
+                    Nos Cinemas <Popcorn className="w-6 h-6 text-red-600 flex-shrink-0" />
+                  </span>
+                }
+                movies={nowPlayingMovies.movies}
+                onMovieClick={handleMovieClick}
+              />
+            ) : null}
+          </>
         )}
       </main>
 

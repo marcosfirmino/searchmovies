@@ -5,6 +5,7 @@ import { useSearch } from "@/hooks/useSearch";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import MovieCard from "@/components/ui/MovieCard";
+import MovieCardSkeleton from "@/components/ui/MovieCardSkeleton";
 import { Search } from "lucide-react";
 
 /**
@@ -52,10 +53,20 @@ export default function HeroSearch({ onMovieClick }) {
       {/* Resultados da Busca */}
       {query && (
         <div className="mt-12 w-full max-w-7xl">
-          {loading && <LoadingSpinner />}
           {error && <ErrorMessage message={error} />}
           
-          {!loading && !error && movies.length > 0 && (
+          {loading ? (
+            <div>
+              <h2 className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-2xl font-bold text-white mb-3 sm:mb-4 md:mb-5 lg:mb-5 xl:mb-6 text-left px-4 sm:pl-8">
+                Resultados da Busca
+              </h2>
+              <div className="flex gap-4 sm:gap-6 overflow-x-auto hide-scroll pb-6 md:pb-8 px-4 sm:pl-8 sm:pr-8 snap-x">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <MovieCardSkeleton key={index} />
+                ))}
+              </div>
+            </div>
+          ) : !error && movies.length > 0 ? (
             <div>
               <h2 className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-2xl font-bold text-white mb-3 sm:mb-4 md:mb-5 lg:mb-5 xl:mb-6 text-left px-4 sm:pl-8">
                 Resultados da Busca
@@ -70,13 +81,11 @@ export default function HeroSearch({ onMovieClick }) {
                 ))}
               </div>
             </div>
-          )}
-
-          {!loading && !error && movies.length === 0 && query && (
+          ) : !error && movies.length === 0 && query ? (
             <div className="text-center py-20 text-gray-500">
               <p className="text-xl">Nenhum título encontrado para sua busca.</p>
             </div>
-          )}
+          ) : null}
         </div>
       )}
     </div>

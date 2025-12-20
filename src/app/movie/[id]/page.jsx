@@ -13,6 +13,7 @@ import TechInfoSection from "@/components/movies/TechInfoSection";
 import StreamingProvidersSection from "@/components/movies/StreamingProvidersSection";
 import CastCarousel from "@/components/movies/CastCarousel";
 import MovieCarouselModern from "@/components/movies/MovieCarouselModern";
+import MovieDetailSkeleton from "@/components/movies/MovieDetailSkeleton";
 import { Play, Youtube, X } from "lucide-react";
 
 export default function MovieDetailPage() {
@@ -69,11 +70,7 @@ export default function MovieDetailPage() {
 
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner />
-      </div>
-    );
+    return <MovieDetailSkeleton />;
   }
 
   if (error) {
