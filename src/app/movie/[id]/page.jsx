@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import { getImageUrl } from "@/services/tmdb";
 import { formatRating } from "@/utils/formatters";
 import Button from "@/components/ui/Button";
@@ -40,7 +41,8 @@ export default function MovieDetailPage() {
   useEffect(() => {
     if (movie) {
       if (movie.backdrop_path) {
-        setHeroImgSrc(getImageUrl(movie.backdrop_path, "original"));
+        // Usa w1280 ao invés de original para melhor performance (1920px é suficiente para telas grandes)
+        setHeroImgSrc(getImageUrl(movie.backdrop_path, "w1280"));
         setHeroError(false);
       }
       if (movie.poster_path) {
@@ -51,14 +53,14 @@ export default function MovieDetailPage() {
   }, [movie]);
 
   const handleHeroError = () => {
-    if (!heroError) {
+    if (!heroError && heroImgSrc !== "/placeholder.png") {
       setHeroError(true);
       setHeroImgSrc("/placeholder.png");
     }
   };
 
   const handlePosterError = () => {
-    if (!posterError) {
+    if (!posterError && posterImgSrc !== "/placeholder.png") {
       setPosterError(true);
       setPosterImgSrc("/placeholder.png");
     }
@@ -90,11 +92,16 @@ export default function MovieDetailPage() {
       {/* Hero Section */}
       <div className="relative w-full h-[40vh] sm:h-[50vh] md:h-[55vh] lg:h-[60vh] xl:h-[65vh] 2xl:h-[80vh] bg-gray-800">
         <div className="absolute inset-0">
-          <img
+          <Image
             src={heroImgSrc}
             onError={handleHeroError}
-            className="w-full h-full object-cover opacity-60 transition-opacity"
+            fill
+            sizes="100vw"
+            className="object-cover opacity-60 transition-opacity"
             alt={movie.title}
+            priority
+            quality={85}
+            unoptimized={heroImgSrc === "/placeholder.png"}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/50 to-transparent"></div>
           <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-[#020617]/30 to-transparent"></div>
@@ -103,12 +110,16 @@ export default function MovieDetailPage() {
 
         <div className="absolute bottom-0 left-0 w-full px-4 sm:px-6 md:px-8 pb-6 sm:pb-7 md:pb-8 lg:pb-10 xl:pb-12 2xl:pb-14 pt-16 sm:pt-20 md:pt-24 lg:pt-28 xl:pt-32 2xl:pt-40 flex flex-col md:flex-row gap-4 md:gap-6 lg:gap-8 xl:gap-10 2xl:gap-12 items-start">
           {/* Poster Flutuante */}
-          <div className="hidden md:block w-36 lg:w-44 xl:w-52 2xl:w-72 aspect-[2/3] rounded-lg overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 bg-gray-800">
-            <img
+          <div className="hidden md:block w-36 lg:w-44 xl:w-52 2xl:w-72 aspect-[2/3] rounded-lg overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 bg-gray-800 relative">
+            <Image
               src={posterImgSrc}
               onError={handlePosterError}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 0px, (max-width: 1024px) 144px, (max-width: 1280px) 176px, (max-width: 1536px) 208px, 288px"
+              className="object-cover"
               alt={movie.title}
+              priority
+              unoptimized={posterImgSrc === "/placeholder.png"}
             />
           </div>
 

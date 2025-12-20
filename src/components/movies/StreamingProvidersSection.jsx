@@ -2,6 +2,7 @@
  * Componente de Plataformas de Streaming
  */
 
+import Image from "next/image";
 import { getImageUrl } from "@/services/tmdb";
 import SectionTitle from "@/components/ui/SectionTitle";
 
@@ -22,9 +23,11 @@ export default function StreamingProvidersSection({ watchProviders }) {
             className="flex items-center gap-2 bg-white/5 rounded-lg p-3 2xl:p-4 border border-white/10 hover:border-red-600/50 transition-colors"
           >
             {provider.logo_path && (
-              <img
+              <Image
                 src={getImageUrl(provider.logo_path, "w92")}
                 alt={provider.provider_name}
+                width={40}
+                height={40}
                 className="w-8 h-8 2xl:w-10 2xl:h-10 object-contain"
               />
             )}

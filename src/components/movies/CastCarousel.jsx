@@ -4,6 +4,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
+import Image from "next/image";
 import { getImageUrl } from "@/services/tmdb";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { User } from "lucide-react";
@@ -29,13 +30,14 @@ export default function CastCarousel({ cast }) {
         {cast.map((actor) => (
           <SwiperSlide key={actor.id} style={{ width: "clamp(170px, 12vw, 230px)", flexShrink: 0 }}>
             <div className="text-center group cursor-pointer">
-              <div className="aspect-[2/3] rounded-lg overflow-hidden mb-3 bg-gray-800 border border-white/10 group-hover:border-red-600/50 transition-all group-hover:scale-105">
+              <div className="aspect-[2/3] rounded-lg overflow-hidden mb-3 bg-gray-800 border border-white/10 group-hover:border-red-600/50 transition-all group-hover:scale-105 relative">
                 {actor.profile_path ? (
-                  <img
+                  <Image
                     src={getImageUrl(actor.profile_path, "w185")}
                     alt={actor.name}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
+                    fill
+                    sizes="(max-width: 1536px) 170px, 230px"
+                    className="object-cover"
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-500">

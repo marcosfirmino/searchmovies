@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { getImageUrl } from "@/services/tmdb";
 import { formatYear, formatRating } from "@/utils/formatters";
 
@@ -20,7 +21,7 @@ export default function MovieCard({ movie, onClick }) {
   const [imgError, setImgError] = useState(false);
 
   const handleImageError = () => {
-    if (!imgError) {
+    if (!imgError && imgSrc !== "/placeholder.png") {
       setImgError(true);
       setImgSrc("/placeholder.png");
     }
@@ -34,12 +35,14 @@ export default function MovieCard({ movie, onClick }) {
       className="group relative flex-shrink-0 w-[160px] sm:w-[180px] md:w-[200px] cursor-pointer transition-all duration-300 hover:z-20"
     >
       <div className="aspect-[2/3] rounded-xl overflow-hidden relative transition-all duration-300 group-hover:scale-[1.08] group-hover:shadow-[0_8px_25px_rgba(239,68,68,0.3),0_0_12px_rgba(239,68,68,0.15)]">
-        <img
+        <Image
           src={imgSrc}
           alt={movie.title}
+          fill
+          sizes="(max-width: 640px) 160px, (max-width: 768px) 180px, 200px"
+          className="object-cover transition-opacity duration-300 group-hover:opacity-80"
           onError={handleImageError}
-          className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80"
-          loading="lazy"
+          unoptimized={imgSrc === "/placeholder.png"}
         />
 
         {/* Overlay info on hover */}
