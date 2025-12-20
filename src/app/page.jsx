@@ -7,6 +7,7 @@ import GenreMovieSection from "./_components/GenreMovieSection";
 import MovieCarouselModern from "@/components/movies/MovieCarouselModern";
 import Footer from "./_components/Footer";
 import LoadingSpinner from "./_components/LoadingSpinner";
+import { Flame, Star, Popcorn } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
@@ -48,7 +49,11 @@ export default function Home() {
         {/* Carrosséis de Filmes Populares */}
         {popularMovies.movies.length > 0 && (
           <MovieCarouselModern
-            title="Em Alta 🔥"
+            title={
+              <span className="inline-flex items-center gap-2">
+                Em Alta <Flame className="w-6 h-6 text-red-600 flex-shrink-0" />
+              </span>
+            }
             movies={popularMovies.movies}
             onMovieClick={handleMovieClick}
           />
@@ -56,7 +61,11 @@ export default function Home() {
 
         {topRatedMovies.movies.length > 0 && (
           <MovieCarouselModern
-            title="Bem Avaliados 🧐"
+            title={
+              <span className="inline-flex items-center gap-2">
+                Bem Avaliados <Star className="w-6 h-6 text-red-600 flex-shrink-0" />
+              </span>
+            }
             movies={topRatedMovies.movies}
             onMovieClick={handleMovieClick}
           />
@@ -64,7 +73,11 @@ export default function Home() {
 
         {nowPlayingMovies.movies.length > 0 && (
           <MovieCarouselModern
-            title="Nos Cinemas 🍿"
+            title={
+              <span className="inline-flex items-center gap-2">
+                Nos Cinemas <Popcorn className="w-6 h-6 text-red-600 flex-shrink-0" />
+              </span>
+            }
             movies={nowPlayingMovies.movies}
             onMovieClick={handleMovieClick}
           />

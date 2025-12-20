@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getImageUrl } from "@/services/tmdb";
-import { formatYear, formatRating } from "@/utils/formatters";
+import { formatRating } from "@/utils/formatters";
 import Button from "@/components/ui/Button";
 import { useMovieDetail } from "@/hooks/useMovieDetail";
 import LoadingSpinner from "@/app/_components/LoadingSpinner";
@@ -13,6 +13,7 @@ import TechInfoSection from "@/components/movies/TechInfoSection";
 import StreamingProvidersSection from "@/components/movies/StreamingProvidersSection";
 import CastCarousel from "@/components/movies/CastCarousel";
 import MovieCarouselModern from "@/components/movies/MovieCarouselModern";
+import { Play, Youtube, X } from "lucide-react";
 
 export default function MovieDetailPage() {
   const { id } = useParams();
@@ -146,17 +147,7 @@ export default function MovieDetailPage() {
             <div className="flex items-center gap-3 sm:gap-4 pt-3 sm:pt-4 flex-wrap">
               <a href={`/watch/${movie.id}`}>
                 <Button variant="primary" size="md" className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base xl:text-base 2xl:text-xl">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    stroke="none"
-                    className="sm:w-5 sm:h-5 md:w-5 md:h-5 xl:w-6 xl:h-6 2xl:w-7 2xl:h-7"
-                  >
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
+                  <Play className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 xl:w-6 xl:h-6 2xl:w-7 2xl:h-7" />
                   Assistir Agora
                 </Button>
               </a>
@@ -169,16 +160,7 @@ export default function MovieDetailPage() {
                   className="flex items-center gap-1.5 sm:gap-2 text-sm sm:text-base xl:text-base 2xl:text-xl"
                   aria-label="Reproduzir trailer"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-4 h-4 sm:w-5 sm:h-5 xl:w-6 xl:h-6 2xl:w-7 2xl:h-7"
-                  >
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                  </svg>
+                  <Youtube className="w-4 h-4 sm:w-5 sm:h-5 xl:w-6 xl:h-6 2xl:w-7 2xl:h-7" />
                   Trailer
                 </Button>
               )}
@@ -226,19 +208,7 @@ export default function MovieDetailPage() {
             className="fixed top-3 right-3 sm:top-4 sm:right-4 z-[70] p-2 sm:p-3 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-red-600 hover:bg-black/90 hover:text-red-500 transition-all cursor-pointer"
             aria-label="Fechar trailer"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-5 h-5 sm:w-6 sm:h-6"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
+            <X className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
           <div
             className="relative w-full max-w-5xl"

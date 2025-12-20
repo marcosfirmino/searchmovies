@@ -78,23 +78,6 @@ export function formatRuntime(minutes) {
 }
 
 /**
- * Formata a classificação indicativa do filme
- * @param {string} certification - Classificação (ex: "L", "10", "12", "14", "16", "18")
- * @returns {string} Classificação formatada (ex: "Livre", "10+", "Não informada")
- */
-export function formatCertification(certification) {
-  if (!certification || certification === "N/A") {
-    return "Não informada";
-  }
-  
-  if (certification === "L") {
-    return "Livre";
-  }
-  
-  return `${certification}+`;
-}
-
-/**
  * Formata a nota de avaliação do filme
  * @param {number} rating - Nota (ex: 8.5)
  * @param {number} decimals - Número de casas decimais (padrão: 1)
@@ -109,16 +92,4 @@ export function formatRating(rating, decimals = 1) {
   } catch {
     return "?";
   }
-}
-
-/**
- * Formata uma lista de gêneros em uma string separada por vírgulas
- * @param {Array} genres - Array de objetos com propriedade 'name'
- * @returns {string} Gêneros formatados (ex: "Ação, Aventura, Drama")
- */
-export function formatGenres(genres) {
-  if (!genres || !Array.isArray(genres) || genres.length === 0) {
-    return "Não informado";
-  }
-  return genres.map((g) => g.name).join(", ");
 }

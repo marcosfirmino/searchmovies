@@ -20,25 +20,3 @@ export function logError(message, error = null) {
   }
   // Em produção, aqui poderia enviar para serviço de logging (Sentry, LogRocket, etc.)
 }
-
-/**
- * Log de informações
- * @param {string} message - Mensagem informativa
- * @param {any} data - Dados adicionais
- */
-export function logInfo(message, data = null) {
-  if (isDevelopment) {
-    console.log(message, data || "");
-  }
-}
-
-/**
- * Log de avisos
- * @param {string} message - Mensagem de aviso
- * @param {any} data - Dados adicionais
- */
-export function logWarning(message, data = null) {
-  if (isDevelopment) {
-    console.warn(message, data || "");
-  }
-}

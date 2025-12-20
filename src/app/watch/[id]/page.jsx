@@ -8,6 +8,7 @@ import { formatYear, formatRating } from "@/utils/formatters";
 import LoadingSpinner from "@/app/_components/LoadingSpinner";
 import Footer from "@/app/_components/Footer";
 import ErrorMessage from "@/components/ui/ErrorMessage";
+import { Star } from "lucide-react";
 
 export default function WatchMovie() {
   const { id } = useParams();
@@ -56,8 +57,9 @@ export default function WatchMovie() {
             <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
               {movie.title}
             </h1>
-            <p className="text-gray-400 text-sm sm:text-base md:text-lg">
-              ({formatYear(movie.release_date)}) ⭐
+            <p className="text-gray-400 text-sm sm:text-base md:text-lg flex items-center justify-center gap-2">
+              ({formatYear(movie.release_date)}) 
+              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
               <span className="text-yellow-400">{formatRating(movie.vote_average)}</span>
             </p>
           </div>

@@ -4,6 +4,7 @@
 
 import { formatDate, formatCurrency, formatRuntime } from "@/utils/formatters";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { Film, Calendar, DollarSign, TrendingUp, Clock } from "lucide-react";
 
 export default function TechInfoSection({ director, releaseDate, budget, revenue, runtime }) {
   return (
@@ -13,7 +14,7 @@ export default function TechInfoSection({ director, releaseDate, budget, revenue
         {director && (
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1 text-lg 2xl:text-xl">
-              <span>🎬</span>
+              <Film className="w-5 h-5 2xl:w-6 2xl:h-6 text-gray-400" />
             </div>
             <div>
               <h4 className="text-gray-500 text-xs 2xl:text-sm mb-1 uppercase tracking-wider">Direção</h4>
@@ -24,7 +25,7 @@ export default function TechInfoSection({ director, releaseDate, budget, revenue
         {releaseDate && (
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1 text-lg 2xl:text-xl">
-              <span>📅</span>
+              <Calendar className="w-5 h-5 2xl:w-6 2xl:h-6 text-gray-400" />
             </div>
             <div>
               <h4 className="text-gray-500 text-xs 2xl:text-sm mb-1 uppercase tracking-wider">Lançamento</h4>
@@ -35,7 +36,7 @@ export default function TechInfoSection({ director, releaseDate, budget, revenue
         {budget > 0 && (
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1 text-lg 2xl:text-xl">
-              <span>💰</span>
+              <DollarSign className="w-5 h-5 2xl:w-6 2xl:h-6 text-gray-400" />
             </div>
             <div>
               <h4 className="text-gray-500 text-xs 2xl:text-sm mb-1 uppercase tracking-wider">Orçamento</h4>
@@ -46,7 +47,7 @@ export default function TechInfoSection({ director, releaseDate, budget, revenue
         {revenue > 0 && (
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1 text-lg 2xl:text-xl">
-              <span>📈</span>
+              <TrendingUp className="w-5 h-5 2xl:w-6 2xl:h-6 text-gray-400" />
             </div>
             <div>
               <h4 className="text-gray-500 text-xs 2xl:text-sm mb-1 uppercase tracking-wider">Receita</h4>
@@ -57,7 +58,7 @@ export default function TechInfoSection({ director, releaseDate, budget, revenue
         {runtime > 0 && (
           <div className="flex items-start gap-3">
             <div className="flex-shrink-0 mt-1 text-lg 2xl:text-xl">
-              <span>⏱️</span>
+              <Clock className="w-5 h-5 2xl:w-6 2xl:h-6 text-gray-400" />
             </div>
             <div>
               <h4 className="text-gray-500 text-xs 2xl:text-sm mb-1 uppercase tracking-wider">Duração</h4>

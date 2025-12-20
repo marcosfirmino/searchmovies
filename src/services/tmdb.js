@@ -205,17 +205,3 @@ export const getGenres = async () => {
     throw new Error("Erro ao carregar gêneros.");
   }
 };
-
-// Exportamos tudo para usar nos componentes
-export default {
-  searchMovies,
-  getMoviesByEndpoint,
-  getMovieDetails,
-  getMovieTrailer,
-  getMovieCredits,
-  getMovieCertification,
-  getMovieRecommendations,
-  getWatchProviders,
-  getGenres,
-  getImageUrl,
-};

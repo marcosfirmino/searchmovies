@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Cookie } from "lucide-react";
 
 /**
  * Componente CookieConsent - Banner de consentimento de cookies
@@ -40,25 +41,7 @@ export default function CookieConsent() {
       <div className="max-w-6xl mx-auto bg-[#0f172a]/90 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-red-600"
-            >
-              <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5Z" />
-              <path d="M8.5 8.5v.01" />
-              <path d="M16 15.5v.01" />
-              <path d="M12 12v.01" />
-              <path d="M11 17v.01" />
-              <path d="M7 14v.01" />
-            </svg>
+            <Cookie className="w-6 h-6 text-red-600" />
             <h3 className="text-white font-semibold text-lg">
               Respeitamos sua privacidade
             </h3>

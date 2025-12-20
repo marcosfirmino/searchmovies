@@ -6,6 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { getImageUrl } from "@/services/tmdb";
 import SectionTitle from "@/components/ui/SectionTitle";
+import { User } from "lucide-react";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -38,20 +39,7 @@ export default function CastCarousel({ cast }) {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-gray-500">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="48"
-                      height="48"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                      <circle cx="12" cy="7" r="4" />
-                    </svg>
+                    <User className="w-12 h-12" />
                   </div>
                 )}
               </div>

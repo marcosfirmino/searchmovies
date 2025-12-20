@@ -5,6 +5,7 @@ import { useSearch } from "@/hooks/useSearch";
 import LoadingSpinner from "./LoadingSpinner";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import MovieCard from "@/components/ui/MovieCard";
+import { Search } from "lucide-react";
 
 /**
  * Componente Hero com busca centralizada (Search-First Design)
@@ -36,21 +37,7 @@ export default function HeroSearch({ onMovieClick }) {
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
         <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl flex items-center p-2 transition-all duration-300 focus-within:bg-white/10 focus-within:border-white/30 focus-within:ring-1 focus-within:ring-white/20">
           <div className="p-3 md:p-4 text-gray-400">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="md:w-7 md:h-7"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
+            <Search className="w-5 h-5 md:w-7 md:h-7" />
           </div>
           <input
             type="text"

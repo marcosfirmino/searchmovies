@@ -23,11 +23,17 @@ export default function SectionTitle({ children, icon = null, variant = "default
     gradient: "bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent",
   };
 
+  const isString = typeof children === 'string';
+  
   return (
     <h2 className={variants[variant]}>
       <span className={barVariants[variant]}></span>
       {icon && <span>{icon}</span>}
-      <span className={textVariants[variant]}>{children}</span>
+      {isString ? (
+        <span className={textVariants[variant]}>{children}</span>
+      ) : (
+        children
+      )}
     </h2>
   );
 }
